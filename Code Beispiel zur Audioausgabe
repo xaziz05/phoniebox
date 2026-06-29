@@ -1,0 +1,9 @@
+local mpd_conf ="/ etc / mpd . conf "
+sudo systemctl enable mpd
+sudo systemctl stop mpd
+sudo cp " $ { jukebox_dir }"/ misc / s a m p l e c o n f i g s / mpd . conf . sample $ {
+mpd_conf }
+sudo sed -i ’s |% AUDIOiFace %| ’" $ ( e s c a p e _ f o r _ s e d " $AUDIOiFace ") " ’| ’ "
+$ { mpd_conf }"
+sudo sed -i ’s |% D I R a u d i o F o l d e r s %| ’" $ ( e s c a p e _ f o r _ s e d "
+$ D I R a u d i o F o l d e r s ") " ’| ’ " $ { mpd_conf }"
