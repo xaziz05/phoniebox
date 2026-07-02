@@ -1,0 +1,36 @@
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.164 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.294 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.029 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.014 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.218 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.017 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.013 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.013 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.013 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.013 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.014 Sekunden
+Messung der reaktionszeit der phoniebox
+--------------------------------------
+RFID-Karte/nReaktionszeit: 0.014 Sekunden
