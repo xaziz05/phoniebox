@@ -1,145 +1,200 @@
-Phoniebox – RFID-basierte Musikbox mit Raspberry Pi
+# 🎵 Phoniebox – RFID-basierte Musikbox mit Raspberry Pi
 
-Einführung
+> Eine Musikbox, die per RFID-Karte gesteuert wird: Karte auflegen → Musik läuft.
+> Projekt im Modul **App Development**, Hochschule Niederrhein, Sommersemester 2026.
 
-Dieses Repository dokumentiert unser Projekt im Modul App Development. Ziel des Projekts ist der Aufbau und die Erweiterung einer sogenannten Phoniebox. Dabei handelt es sich um eine Musikbox, die über RFID-Karten gesteuert werden kann.
+Dieses Repository dokumentiert unseren Aufbau und die Erweiterung einer **Phoniebox** –
+einer Musikbox, die ohne klassische Bedienoberfläche allein über RFID-Karten oder
+-Chips bedient wird. Sie eignet sich z. B. für Kinder, Lerninhalte oder eine einfache
+Mediensteuerung.
 
-Die Grundidee ist, dass eine RFID-Karte oder ein RFID-Chip an einen Reader gehalten wird und dadurch ein bestimmter Audioinhalt abgespielt wird. Dadurch kann die Musikbox ohne klassische Bedienoberfläche genutzt werden und eignet sich zum Beispiel für Kinder, Lerninhalte oder eine einfache Mediensteuerung.
+> ℹ️ **Hinweis zur Herkunft des Codes:** Der größte Teil dieses Repositorys ist die
+> Original-Software des Open-Source-Projekts
+> [MiczFlor/RPi-Jukebox-RFID](https://github.com/MiczFlor/RPi-Jukebox-RFID)
+> (Ordner `components/`, `scripts/`, `ci/`, `misc/` …). **Unser eigener Anteil** liegt in
+> der praktischen Umsetzung, Konfiguration und Dokumentation und ist in dieser README
+> sowie im Ordner [`dokumentation/`](dokumentation/) gebündelt.
 
-Projektgrundlage
+---
 
-Als technische Grundlage verwenden wir ein bestehendes Open-Source-Projekt zur Phoniebox / RPi-Jukebox-RFID:
+## Inhaltsverzeichnis
 
-https://github.com/MiczFlor/RPi-Jukebox-RFID
+- [Über das Projekt](#über-das-projekt)
+- [Projektziele](#projektziele)
+- [Hardware](#hardware)
+- [Software](#software)
+- [Architektur](#architektur)
+- [Einrichtung](#einrichtung)
+- [Probleme & Lösungen](#probleme--lösungen)
+- [Statusanzeige für den RFID-Leser](#statusanzeige-für-den-rfid-leser)
+- [Messdaten](#messdaten)
+- [Repository-Struktur](#repository-struktur)
+- [Eigener Projektanteil](#eigener-projektanteil)
+- [Team](#team)
+- [Lizenz & Credits](#lizenz--credits)
 
-Die ursprüngliche Software wurde nicht vollständig von uns selbst entwickelt, sondern dient als Basis für unsere eigene Umsetzung. Unser Fokus liegt darauf, die vorhandene Software auf unserer Hardware lauffähig zu machen, die Komponenten zu verstehen, zu konfigurieren und mögliche Erweiterungen für unser Projekt zu entwickeln.
+---
 
-Projektziel
+## Über das Projekt
 
-Das Ziel unseres Projekts ist es, eine funktionsfähige RFID-Musikbox mit einem Raspberry Pi umzusetzen.
+Die Grundidee: Eine RFID-Karte wird an einen Reader gehalten und löst dadurch einen
+bestimmten Audioinhalt aus. So lässt sich die Musikbox komplett ohne Bildschirm oder
+Tasten bedienen.
 
-Dabei sollen folgende Punkte erreicht werden:
+Als technische Grundlage nutzen wir das bestehende Open-Source-Projekt
+**RPi-Jukebox-RFID**. Unser Fokus liegt darauf, die Software auf **unserer** Hardware
+lauffähig zu machen, die Komponenten zu verstehen, sauber zu konfigurieren und die
+aufgetretenen Probleme samt Lösungen zu dokumentieren.
 
-* Einrichtung eines Raspberry Pi als zentrale Steuereinheit
-* Installation und Konfiguration der Phoniebox-Software
-* Anschluss und Test eines RFID-/NFC-Readers
-* Steuerung von Audioinhalten über RFID-Karten
-* Test der Audioausgabe über Lautsprecher
-* Dokumentation der Einrichtung, Probleme und Lösungsansätze
-* Entwicklung und Beschreibung möglicher Erweiterungen für die bestehende Software
+## Projektziele
 
-Hardware
+| Status | Ziel |
+|:------:|------|
+| ✅ | Raspberry Pi als zentrale Steuereinheit einrichten |
+| ✅ | Phoniebox-Software installieren und konfigurieren |
+| ✅ | RFID-/NFC-Reader anschließen und testen |
+| ✅ | Audioinhalte über RFID-Karten steuern |
+| ✅ | Audioausgabe über Lautsprecher **und Bluetooth** testen |
+| ✅ | Einrichtung, Probleme und Lösungsansätze dokumentieren |
+| ✅ | Eigene Live-Statusanzeige für den RFID-Leser programmiert |
 
-Für das Projekt werden folgende Komponenten verwendet:
+## Hardware
 
-* Raspberry Pi 3
-* RFID-/NFC-Reader, z. B. PN532
-* RFID-Karten oder RFID-Chips
-* Lautsprecher über Klinke oder Bluetooth
-* Netzteil und Verbindungskabel
+| Komponente | Verwendetes Modell |
+|------------|--------------------|
+| Einplatinencomputer | Raspberry Pi 4 Model B |
+| RFID-/NFC-Reader | z. B. PN532 |
+| Karten/Chips | RFID-Karten oder -Chips |
+| Audioausgabe | Lautsprecher über Klinke **oder Bluetooth** (z. B. JBL Flip 6) |
+| Stromversorgung | Netzteil und Verbindungskabel |
 
-Software
+## Software
 
-Verwendete Software und Tools:
+| Tool | Zweck |
+|------|-------|
+| Raspberry Pi OS Lite | Betriebssystem |
+| RPi-Jukebox-RFID | Phoniebox-Basissoftware |
+| Mopidy / MPD | Musik-Player (Wiedergabe) |
+| PipeWire / PulseAudio | Audio-Ausgabe (inkl. Bluetooth) |
+| Git & GitHub | Versionierung und Dokumentation |
+| Terminal / VS Code | Einrichtung und Bearbeitung |
 
-* Raspberry Pi OS Lite
-* Phoniebox / RPi-Jukebox-RFID als Basissoftware
-* GitHub zur Versionierung und Dokumentation
-* Terminal zur Einrichtung und Konfiguration
-* VS Code / GitHub-Weboberfläche zur Bearbeitung des Repositorys
+## Architektur
 
-Eigener Projektanteil
+Ablauf von der Karte bis zur Musik:
 
-Da die Phoniebox-Software bereits als Open-Source-Projekt existiert, besteht unser eigener Projektanteil vor allem aus der praktischen Umsetzung, Konfiguration, Analyse und Dokumentation.
+![Ablauf-Flowchart der Phoniebox](dokumentation/architektur-flowchart.png)
 
-Unsere bisherigen Arbeitsschritte:
+## Einrichtung
+
+Eine Schritt-für-Schritt-Anleitung zur Einrichtung, zu nützlichen Terminal-Befehlen
+und zum Hochladen von Daten auf GitHub findet sich hier:
+
+➡️ **[`dokumentation/einrichtung.md`](dokumentation/einrichtung.md)**
+
+Ein Beispiel zur MPD-/Audio-Konfiguration:
+
+➡️ **[`dokumentation/beispiel-mpd-konfiguration.md`](dokumentation/beispiel-mpd-konfiguration.md)**
+
+## Probleme & Lösungen
+
+Die während des Projekts aufgetretenen Probleme und ihre Lösungen sind ausführlich
+dokumentiert in:
+
+➡️ **[`dokumentation/fehlerbehebung.md`](dokumentation/fehlerbehebung.md)**
+
+Kurzüberblick:
+
+| Problem | Ursache | Lösung |
+|---------|---------|--------|
+| Bluetooth-Box verbunden, aber kein Ton | Mopidy gab den Ton an `alsasink` (interne Soundkarte) aus, an PipeWire/Bluetooth vorbei | Ausgabe auf `pulsesink` umgestellt, Mopidy im Ton-Kontext von Benutzer `pi` laufen lassen, Bluetooth-Box als Standard-Ausgang gesetzt |
+| RFID-Reader liest keine Karten mehr | Reader-Prozess hängt | `sudo systemctl restart phoniebox-rfid-reader.service` |
+| Login beim `git push` scheitert | GitHub akzeptiert kein Passwort mehr | Personal Access Token statt Passwort verwenden |
+
+## Statusanzeige für den RFID-Leser
+
+Als **weitere Erweiterung** haben wir eine kleine Weboberflächen-Seite programmiert, die
+**live anzeigt, ob der NFC-/RFID-Leser einwandfrei funktioniert**. Auslöser war unser
+Problem, dass der Leser zwischenzeitlich keine Karten mehr erkannt hat – mit der Anzeige
+sieht man den Zustand nun auf einen Blick.
+
+Die Seite (`rfid-status.php`) fragt alle 2 Sekunden den Dienst
+`phoniebox-rfid-reader.service` ab und zeigt einen großen Statuspunkt:
+
+- 🟢 **grün, pulsierend** – der RFID-Leser läuft einwandfrei
+- 🔴 **rot** – der Leser reagiert nicht (Abhilfe: `sudo systemctl restart phoniebox-rfid-reader.service`)
+
+**Aufruf im Browser:** `localhost/rfid-status.php`
+
+Umgesetzt als eigenständige PHP-Seite, damit die originale Phoniebox-Oberfläche
+(`index.php`) unverändert und stabil bleibt. Technisch prüft sie den Dienststatus per
+`systemctl is-active` und aktualisiert sich per JavaScript automatisch.
+
+## Messdaten
+
+Eigene Messungen (z. B. die Reaktionszeit des Chiplesers) werden gesammelt in:
+
+➡️ **[`messdaten/`](messdaten/)**
+
+## Repository-Struktur
+
+```
+.
+├── README.md                     # Diese Übersicht (unser Projekt)
+├── rfid-status.php               # 👈 UNSERE Live-Statusanzeige für den RFID-Leser
+├── dokumentation/                # 👈 UNSERE eigene Dokumentation
+│   ├── einrichtung.md            #     Setup & Terminal-Befehle
+│   ├── fehlerbehebung.md         #     Probleme & Lösungen
+│   ├── beispiel-mpd-konfiguration.md
+│   └── architektur-flowchart.png
+├── messdaten/                    # 👈 UNSERE Messungen (z. B. Reaktionszeit)
+├── playlists/                    # 👈 UNSERE Playlists (Lied_2, musik)
+│
+├── components/                   # Original-Phoniebox-Software (Upstream)
+├── scripts/                      # Original-Phoniebox-Skripte (Upstream)
+├── ci/                           # Original: Build-/Test-Konfiguration (Upstream)
+├── misc/                         # Original: Beispiel-Audiodateien (Upstream)
+├── requirements*.txt             # Original: Python-Abhängigkeiten (Upstream)
+└── packages*.txt                 # Original: Systempakete (Upstream)
+```
+
+> 👈 markiert die von uns erstellten bzw. gepflegten Bereiche. Alles andere gehört zur
+> Original-Software und dient als Grundlage.
+
+## Eigener Projektanteil
+
+Da die Phoniebox-Software bereits als Open-Source-Projekt existiert, besteht unser
+eigener Anteil vor allem aus **praktischer Umsetzung, Konfiguration, Fehleranalyse und
+Dokumentation**:
 
 1. Recherche zur bestehenden Phoniebox-Software
-2. Download und Einrichtung der Software auf dem Raspberry Pi
+2. Installation und Einrichtung auf dem Raspberry Pi
 3. Anschluss und Test des RFID-/NFC-Readers
 4. Prüfung der Hardwareverbindung
-5. Test der Audioausgabe
-6. Analyse von Problemen bei Bluetooth und Tonwiedergabe
+5. Test der Audioausgabe (Klinke und Bluetooth)
+6. Analyse und Lösung von Problemen bei Bluetooth und Tonwiedergabe
 7. Dokumentation wichtiger Terminal-Befehle
 8. Strukturierung des GitHub-Repositorys
-9. Planung möglicher Erweiterungen für das Projekt
+9. Messung der Reaktionszeit des Chiplesers
+10. Programmierung einer eigenen Live-Statusanzeige für den RFID-Leser (`rfid-status.php`)
+11. Planung möglicher Erweiterungen
 
-Repository-Struktur
+**Geplante Erweiterungen:** keine 
 
-Die Ordnerstruktur enthält einerseits Bestandteile der verwendeten Phoniebox-Basissoftware und andererseits unsere eigene Projektdokumentation.
+## Team
 
-.
-├── README.md
-├── components/
-├── docs/
-├── htdocs/
-├── logs/
-├── misc/
-├── playlists/
-├── scripts/
-├── settings/
-├── shared/
-├── requirements.txt
-├── packages.txt
-└── ...
+- Yassin
+- Aziz
+- Melina
 
-Wichtige Bereiche:
+## Lizenz & Credits
 
-Bereich	Bedeutung
-README.md	Übersicht und Beschreibung unseres Projekts
-docs/	Dokumentation zur Einrichtung, Hardware und Fehlersuche
-scripts/	Skripte der Phoniebox-Software
-settings/	Konfigurationsdateien
-playlists/	Bereich für Audioinhalte bzw. Zuordnungen
-requirements.txt	benötigte Software-Abhängigkeiten
-packages.txt	benötigte Systempakete
+Dieses Projekt basiert auf der Open-Source-Software
+[MiczFlor/RPi-Jukebox-RFID](https://github.com/MiczFlor/RPi-Jukebox-RFID).
+Die ursprüngliche Software wurde **nicht** von uns entwickelt – siehe [`LICENSE`](LICENSE).
+Wir verwenden sie als Grundlage für unser App-Development-Projekt und dokumentieren
+unsere eigene Einrichtung, Konfiguration und Erweiterungsideen.
 
-Aktueller Stand
+---
 
-Aktueller Projektstand:
-
-* Raspberry Pi wurde eingerichtet
-* Phoniebox-Software wurde heruntergeladen und installiert
-* RFID-/NFC-Reader wurde angeschlossen
-* Reader wurde vom System erkannt
-* Audioausgabe wurde getestet
-* Bluetooth-Verbindung wurde getestet
-* Probleme bei der Audioausgabe wurden analysiert
-* GitHub-Repository wurde erstellt und strukturiert
-
-Geplante Erweiterungen
-
-Im weiteren Projektverlauf sollen mögliche Erweiterungen geprüft und umgesetzt werden. Denkbare Erweiterungen sind:
-
-* bessere Dokumentation der RFID-Karten-Zuordnung
-* eigene Start-/Stop-Funktionen über RFID-Karten
-* Lautstärkesteuerung über spezielle Karten
-* übersichtlichere Projektstruktur
-* genauere Fehlerdokumentation
-* Erweiterung der README und zusätzlicher Dokumentationsdateien
-* Test verschiedener Audioausgaben, z. B. Klinke und Bluetooth
-
-Versionierung
-
-Für die Versionierung verwenden wir GitHub. Änderungen am Projekt werden über Commits dokumentiert. Dadurch ist nachvollziehbar, welche Dateien verändert wurden und welche Arbeitsschritte im Projekt durchgeführt wurden.
-
-Beispiele für sinnvolle Commit-Nachrichten:
-
-docs: README mit Projektbeschreibung aktualisiert
-docs: Hardware-Dokumentation ergänzt
-docs: Fehlersuche dokumentiert
-config: RFID-Reader-Einrichtung beschrieben
-
-Lizenz und Hinweise
-
-Dieses Projekt basiert auf einer bestehenden Open-Source-Software zur Phoniebox / RPi-Jukebox-RFID. Die ursprüngliche Software wurde nicht von uns entwickelt. Wir verwenden sie als Grundlage für unser App-Development-Projekt und dokumentieren unsere eigene Einrichtung, Konfiguration und Erweiterungsideen.
-
-Projektteam
-
-* Yassin
-* Aziz
-* Melina
-
-Modul: App Development
-Hochschule Niederrhein
-Sommersemester 2026
+*Modul: App Development · Hochschule Niederrhein · Sommersemester 2026*
